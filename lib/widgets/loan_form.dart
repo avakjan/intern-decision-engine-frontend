@@ -12,7 +12,7 @@ import '../colors.dart';
 
 // LoanForm is a StatefulWidget that displays a loan application form.
 class LoanForm extends StatefulWidget {
-  const LoanForm({Key? key}) : super(key: key);
+  const LoanForm({super.key});
 
   @override
   _LoanFormState createState() => _LoanFormState();
@@ -24,8 +24,8 @@ class _LoanFormState extends State<LoanForm> {
   String _nationalId = '';
   int _loanAmount = 2500;
   int _loanPeriod = 36;
-  int _loanAmountResult = 0;
-  int _loanPeriodResult = 0;
+  int loanAmountResult = 0;
+  int loanPeriodResult = 0;
   String _errorMessage = '';
 
   // Submit the form and update the state with the loan decision results.
@@ -35,21 +35,14 @@ class _LoanFormState extends State<LoanForm> {
       final result = await _apiService.requestLoanDecision(
           _nationalId, _loanAmount, _loanPeriod);
       setState(() {
-        int tempAmount = int.parse(result['loanAmount'].toString());
-        int tempPeriod = int.parse(result['loanPeriod'].toString());
+        loanAmountResult = int.parse(result['loanAmount'].toString());
+        loanPeriodResult = int.parse(result['loanPeriod'].toString());
 
-        if (tempAmount <= _loanAmount || tempPeriod > _loanPeriod) {
-          _loanAmountResult = int.parse(result['loanAmount'].toString());
-          _loanPeriodResult = int.parse(result['loanPeriod'].toString());
-        } else {
-          _loanAmountResult = _loanAmount;
-          _loanPeriodResult = _loanPeriod;
-        }
         _errorMessage = result['errorMessage'].toString();
       });
     } else {
-      _loanAmountResult = 0;
-      _loanPeriodResult = 0;
+      loanAmountResult = 0;
+      loanPeriodResult = 0;
     }
   }
 
@@ -106,8 +99,8 @@ class _LoanFormState extends State<LoanForm> {
                     },
                   ),
                   const SizedBox(height: 4),
-                  Row(
-                    children: const [
+                  const Row(
+                    children: [
                       Expanded(
                         child: Padding(
                           padding: EdgeInsets.only(left: 12),
@@ -145,8 +138,8 @@ class _LoanFormState extends State<LoanForm> {
                     },
                   ),
                   const SizedBox(height: 4),
-                  Row(
-                    children: const [
+                  const Row(
+                    children: [
                       Expanded(
                         child: Padding(
                           padding: EdgeInsets.only(left: 12),
@@ -175,10 +168,10 @@ class _LoanFormState extends State<LoanForm> {
           Column(
             children: [
               Text(
-                  'Approved Loan Amount: ${_loanAmountResult != 0 ? _loanAmountResult : "--"} €'),
+                  'Approved Loan Amount: ${loanAmountResult != 0 ? loanAmountResult : "--"} €'),
               const SizedBox(height: 8.0),
               Text(
-                  'Approved Loan Period: ${_loanPeriodResult != 0 ? _loanPeriodResult : "--"} months'),
+                  'Approved Loan Period: ${loanPeriodResult != 0 ? loanPeriodResult : "--"} months'),
               Visibility(
                   visible: _errorMessage != '',
                   child: Text(_errorMessage, style: errorMedium))
