@@ -43,6 +43,7 @@ class _LoanFormState extends State<LoanForm> {
     } else {
       loanAmountResult = 0;
       loanPeriodResult = 0;
+      _errorMessage = '';
     }
   }
 
